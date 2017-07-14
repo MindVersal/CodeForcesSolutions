@@ -28,12 +28,12 @@ def convert_to_rc(raw_row):
 
 def convert_from_rc(raw_row):
     row_second = raw_row[0]
-    row_temp = int(raw_row[1])
+    row_temp = int(raw_row[1]) - 1
     row_first = ''
-    if POW_26_0 <= row_temp <= POW_26_1:
+    if POW_26_0 <= row_temp < POW_26_1:
         row_first = ALPHABET_ARRAY[row_temp]
-    elif POW_26_1 < row_temp <= POW_26_2:
-        row_first = ALPHABET_ARRAY[row_temp // ALPHABET_COUNT] + ALPHABET_ARRAY[row_temp % ALPHABET_COUNT]
+    elif POW_26_1 <= row_temp <= POW_26_2:
+        row_first = ALPHABET_ARRAY[row_temp // ALPHABET_COUNT] + ALPHABET_ARRAY[row_temp % ALPHABET_COUNT + 1]
 
     return row_first + row_second
 
