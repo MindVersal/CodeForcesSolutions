@@ -1,7 +1,7 @@
 import re
 
 
-ALPHABET_ARRAY = ['', 'A', 'B', 'C', 'D', 'E', 'F',
+ALPHABET_ARRAY = ['A', 'B', 'C', 'D', 'E', 'F',
                   'G', 'H', 'I', 'J', 'K', 'L', 'M',
                   'N', 'O', 'P', 'Q', 'R', 'S', 'T',
                   'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -11,10 +11,11 @@ ALPHABET_MAP = {'':   0, 'A':  1, 'B':  2, 'C':  3, 'D':  4, 'E':  5, 'F':  6,
                 'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25, 'Z': 26}
 ALPHABET_COUNT = 26
 POW_26_0 = 1
-POW_26_1 = 26
-POW_26_2 = 676
-POW_26_3 = 17576
-POW_26_4 = 456976
+POW_26_1 = 26 + POW_26_0        # = 27
+POW_26_2 = 676 + POW_26_1       # = 703
+POW_26_3 = 17576 + POW_26_2     # = 18279
+POW_26_4 = 456976 + POW_26_3    # = 475255
+POW_26_5 = 11881376 + POW_26_4  # = 12356631
 
 
 def convert_to_rc(raw_row):
@@ -28,13 +29,52 @@ def convert_to_rc(raw_row):
 
 def convert_from_rc(raw_row):
     row_second = raw_row[0]
-    row_temp = int(raw_row[1]) - 1
+    row_temp = int(raw_row[1])
     row_first = ''
-    if POW_26_0 <= row_temp < POW_26_1:
-        row_first = ALPHABET_ARRAY[row_temp]
-    elif POW_26_1 <= row_temp <= POW_26_2:
-        row_first = ALPHABET_ARRAY[row_temp // ALPHABET_COUNT] + ALPHABET_ARRAY[row_temp % ALPHABET_COUNT + 1]
-
+    if 0 < row_temp < POW_26_1:
+        row_first = ALPHABET_ARRAY[row_temp - 1]
+    elif POW_26_1 <= row_temp < POW_26_2:
+        row_temp -= POW_26_1
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT]
+        row_temp = temp_rest
+        row_first = ALPHABET_ARRAY[row_temp % ALPHABET_COUNT] + row_first
+    elif POW_26_2 <= row_temp < POW_26_3:
+        row_temp -= POW_26_2
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT]
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        row_first = ALPHABET_ARRAY[row_temp % ALPHABET_COUNT] + row_first
+    elif POW_26_3 <= row_temp < POW_26_4:
+        row_temp -= POW_26_3
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT]
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        row_first = ALPHABET_ARRAY[row_temp % ALPHABET_COUNT] + row_first
+    elif POW_26_4 <= row_temp < POW_26_5:
+        row_temp -= POW_26_4
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT]
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        temp_rest = row_temp // ALPHABET_COUNT
+        row_first = ALPHABET_ARRAY[row_temp - temp_rest * ALPHABET_COUNT] + row_first
+        row_temp = temp_rest
+        row_first = ALPHABET_ARRAY[row_temp % ALPHABET_COUNT] + row_first
     return row_first + row_second
 
 
