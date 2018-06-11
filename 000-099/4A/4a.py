@@ -4,7 +4,11 @@ Program for solution problem 4A.
 
 
 def is_even(number):
-    if number % 2 == 0:
+    """
+    :param number:
+    :return:
+    """
+    if number % 2 == 0 and number > 1:
         return True
     else:
         return False
